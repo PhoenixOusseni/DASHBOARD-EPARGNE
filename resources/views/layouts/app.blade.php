@@ -101,7 +101,7 @@
     </div>
 
     <div class="nav-section">Navigation</div>
-    <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+    <a href="{{ route('dashboard.global') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
         <i class="bi bi-bar-chart-line-fill"></i> Tableau de bord
     </a>
 
