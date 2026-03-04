@@ -172,14 +172,14 @@
                     {
                         label: 'Warehouse',
                         data: warehouseData,
-                        borderColor: '#1a2942',
+                        borderColor: 'red',
                         backgroundColor: 'rgba(26, 41, 66, 0.1)',
                         borderWidth: 3,
                         fill: true,
                         tension: 0.4,
                         pointRadius: 5,
-                        pointBackgroundColor: '#1a2942',
-                        pointBorderColor: '#fff',
+                        pointBackgroundColor: 'red',
+                        pointBorderColor: 'red',
                         pointBorderWidth: 2
                     },
                     {
@@ -196,15 +196,15 @@
                         pointBorderWidth: 2
                     },
                     {
-                        label: 'Caisse (IMF)',
+                        label: 'Compte épargne (IMF)',
                         data: caisseData,
-                        borderColor: '#0d7a8a',
+                        borderColor: '#764ba2',
                         backgroundColor: 'rgba(13, 122, 138, 0.1)',
                         borderWidth: 3,
                         fill: true,
                         tension: 0.4,
                         pointRadius: 5,
-                        pointBackgroundColor: '#0d7a8a',
+                        pointBackgroundColor: '#764ba2',
                         pointBorderColor: '#fff',
                         pointBorderWidth: 2
                     },
@@ -324,7 +324,7 @@
         new Chart(ctxEcarts, {
             type: 'bar',
             data: {
-                labels: ['Écart Cahier', 'Écart Caisse (IMF)', 'Écart ODK'],
+                labels: ['Cahier vs WH', 'Compte épargne (IMF) vs WH', 'ODK vs WH'],
                 datasets: [{
                     label: 'Écarts',
                     data: [

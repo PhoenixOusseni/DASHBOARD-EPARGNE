@@ -7,13 +7,14 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RapportEpargneController;
 use App\Http\Controllers\DashboardGlobalController;
 
-// Dashboard
-Route::get('/dashboard/mensuel', [DashboardController::class, 'index'])->name('dashboard');
-Route::get('/dashboard/print', [DashboardController::class, 'print'])->name('dashboard.print');
 
-// Dashboard global
+// Dashboard mensuel
 Route::get('/', [DashboardGlobalController::class, 'index'])->name('dashboard.global');
 Route::get('/dashboard/global/print', [DashboardGlobalController::class, 'print'])->name('dashboard.global.print');
+
+// Dashboard global
+Route::get('/dashboard/mensuel', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard/print', [DashboardController::class, 'print'])->name('dashboard.print');
 
 // Régions
 Route::resource('regions', RegionController::class)->except(['show']);
