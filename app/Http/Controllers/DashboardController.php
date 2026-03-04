@@ -22,8 +22,10 @@ class DashboardController extends Controller
             'warehouse'    => 0,
             'cahier'       => 0,
             'caisse'       => 0,
+            'odk'          => 0,
             'ecart'        => 0,
             'ecart_caisse' => 0,
+            'ecart_odk'    => 0,
             'rapports'     => 0,
         ];
 
@@ -32,15 +34,17 @@ class DashboardController extends Controller
             $totalGlobal['warehouse']    += $region->totaux['warehouse'];
             $totalGlobal['cahier']       += $region->totaux['cahier'];
             $totalGlobal['caisse']       += $region->totaux['caisse'];
+            $totalGlobal['odk']          += $region->totaux['odk'];
             $totalGlobal['ecart']        += $region->totaux['ecart'];
             $totalGlobal['ecart_caisse'] += $region->totaux['ecart_caisse'];
+            $totalGlobal['ecart_odk']    += $region->totaux['ecart_odk'];
             $totalGlobal['rapports']     += $region->totaux['rapports'];
         }
 
         $moisListe = $this->listeMois();
         $annees    = range(now()->year - 3, now()->year + 1);
 
-        return view('dashboard.index', compact(
+        return view('dashboard.dashboard_mois', compact(
             'regions', 'totalGlobal', 'mois', 'annee', 'moisListe', 'annees'
         ));
     }
@@ -58,8 +62,10 @@ class DashboardController extends Controller
             'warehouse'    => 0,
             'cahier'       => 0,
             'caisse'       => 0,
+            'odk'          => 0,
             'ecart'        => 0,
             'ecart_caisse' => 0,
+            'ecart_odk'    => 0,
             'rapports'     => 0,
         ];
 
@@ -68,8 +74,10 @@ class DashboardController extends Controller
             $totalGlobal['warehouse']    += $region->totaux['warehouse'];
             $totalGlobal['cahier']       += $region->totaux['cahier'];
             $totalGlobal['caisse']       += $region->totaux['caisse'];
+            $totalGlobal['odk']          += $region->totaux['odk'];
             $totalGlobal['ecart']        += $region->totaux['ecart'];
             $totalGlobal['ecart_caisse'] += $region->totaux['ecart_caisse'];
+            $totalGlobal['ecart_odk']    += $region->totaux['ecart_odk'];
             $totalGlobal['rapports']     += $region->totaux['rapports'];
         }
 
@@ -82,7 +90,7 @@ class DashboardController extends Controller
 
     private function calcTotauxRegion(Region $region): array
     {
-        $totaux = ['warehouse' => 0, 'cahier' => 0, 'caisse' => 0, 'ecart' => 0, 'ecart_caisse' => 0, 'rapports' => 0];
+        $totaux = ['warehouse' => 0, 'cahier' => 0, 'caisse' => 0, 'odk' => 0, 'ecart' => 0, 'ecart_caisse' => 0, 'ecart_odk' => 0, 'rapports' => 0];
 
         foreach ($region->provinces as $province) {
             $rapport = $province->rapportEpargnes->first();
@@ -90,8 +98,10 @@ class DashboardController extends Controller
                 $totaux['warehouse']    += $rapport->montant_warehouse;
                 $totaux['cahier']       += $rapport->montant_cahier;
                 $totaux['caisse']       += $rapport->montant_caisse ?? 0;
+                $totaux['odk']          += $rapport->montant_odk ?? 0;
                 $totaux['ecart']        += $rapport->ecart;
                 $totaux['ecart_caisse'] += $rapport->ecart_caisse_warehouse;
+                $totaux['ecart_odk']    += $rapport->ecart_odk_warehouse;
                 $totaux['rapports']     += $rapport->rapports_g50;
             }
         }

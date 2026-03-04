@@ -60,6 +60,16 @@
                             @error('montant_caisse')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-md-6">
+                            <label class="form-label fw-semibold">Montant ODK (FCFA) <span class="text-danger">*</span></label>
+                            <input type="number" name="montant_odk" min="0"
+                                   class="form-control @error('montant_odk') is-invalid @enderror"
+                                   value="{{ old('montant_odk', $rapport->montant_odk) }}">
+                            @error('montant_odk')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-12">
                             <label class="form-label fw-semibold">Rapports G50 Épargnes Arrivés <span class="text-danger">*</span></label>
                             <input type="number" name="rapports_g50" min="0"
                                    class="form-control @error('rapports_g50') is-invalid @enderror"
@@ -68,14 +78,20 @@
                         </div>
                     </div>
 
+                    <hr class="my-3">
+
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label fw-semibold text-muted">Écart (Cahier – Warehouse)</label>
                             <input type="text" class="form-control bg-light" id="ecart_display" readonly>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label class="form-label fw-semibold text-muted">Écart (Caisse – Warehouse)</label>
                             <input type="text" class="form-control bg-light" id="ecart_display_caisse" readonly>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold text-muted">Écart (ODK – Warehouse)</label>
+                            <input type="text" class="form-control bg-light" id="ecart_display_odk" readonly>
                         </div>
                     </div>
 
@@ -96,8 +112,10 @@
     const warehouse = document.querySelector('[name="montant_warehouse"]');
     const cahier    = document.querySelector('[name="montant_cahier"]');
     const caisse    = document.querySelector('[name="montant_caisse"]');
+    const odk       = document.querySelector('[name="montant_odk"]');
     const ecart     = document.getElementById('ecart_display_caisse');
     const ecartCahierWarehouse = document.getElementById('ecart_display');
+    const ecartOdkWarehouse = document.getElementById('ecart_display_odk');
 
     function updateEcart() {
         const diff = (parseInt(caisse.value) || 0) - (parseInt(warehouse.value) || 0);
@@ -105,17 +123,26 @@
         ecart.style.color = diff < 0 ? '#dc3545' : '#198754';
     }
 
-        function updateEcartCahierWarehouse() {
-            const diffCahierWarehouse = (parseInt(cahier.value) || 0) - (parseInt(warehouse.value) || 0);
-            ecartCahierWarehouse.value = diffCahierWarehouse.toLocaleString('fr-FR');
-            ecartCahierWarehouse.style.color = diffCahierWarehouse < 0 ? '#dc3545' : '#198754';
-        }
+    function updateEcartCahierWarehouse() {
+        const diffCahierWarehouse = (parseInt(cahier.value) || 0) - (parseInt(warehouse.value) || 0);
+        ecartCahierWarehouse.value = diffCahierWarehouse.toLocaleString('fr-FR');
+        ecartCahierWarehouse.style.color = diffCahierWarehouse < 0 ? '#dc3545' : '#198754';
+    }
+
+    function updateEcartOdkWarehouse() {
+        const diffOdkWarehouse = (parseInt(odk.value) || 0) - (parseInt(warehouse.value) || 0);
+        ecartOdkWarehouse.value = diffOdkWarehouse.toLocaleString('fr-FR');
+        ecartOdkWarehouse.style.color = diffOdkWarehouse < 0 ? '#dc3545' : '#198754';
+    }
 
     warehouse.addEventListener('input', updateEcart);
     caisse.addEventListener('input', updateEcart);
     cahier.addEventListener('input', updateEcartCahierWarehouse);
     warehouse.addEventListener('input', updateEcartCahierWarehouse);
+    odk.addEventListener('input', updateEcartOdkWarehouse);
+    warehouse.addEventListener('input', updateEcartOdkWarehouse);
     updateEcart();
     updateEcartCahierWarehouse();
+    updateEcartOdkWarehouse();
 </script>
 @endpush

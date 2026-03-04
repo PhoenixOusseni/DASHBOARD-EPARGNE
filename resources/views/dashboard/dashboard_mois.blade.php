@@ -4,6 +4,21 @@
 
 @section('content')
 
+    <div class="d-flex gap-3 mb-4">
+        <a href="{{ route('dashboard.global') }}" class="btn btn-lg"
+            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);"
+            onmouseover="this.style.boxShadow='0 6px 20px rgba(102, 126, 234, 0.6)'; this.style.transform='translateY(-2px)'"
+            onmouseout="this.style.boxShadow='0 4px 15px rgba(102, 126, 234, 0.4)'; this.style.transform='translateY(0)'">
+            <i class="bi bi-graph-up me-2"></i>Dashboard Global
+        </a>
+        <a href="{{ route('dashboard') }}" class="btn btn-lg"
+            style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);"
+            onmouseover="this.style.boxShadow='0 6px 20px rgba(245, 87, 108, 0.6)'; this.style.transform='translateY(-2px)'"
+            onmouseout="this.style.boxShadow='0 4px 15px rgba(245, 87, 108, 0.4)'; this.style.transform='translateY(0)'">
+            <i class="bi bi-table me-2"></i>Dashboard Détaillé
+        </a>
+    </div>
+
     {{-- Filtres --}}
     <div class="card mb-4">
         <div class="card-body">
@@ -31,8 +46,8 @@
                     <a href="{{ route('rapports.create') }}" class="btn btn-success btn-sm ms-2">
                         <i class="bi bi-plus-lg me-1"></i>&nbsp; Saisir un rapport
                     </a>
-                    <a href="{{ route('dashboard.print', ['mois' => $mois, 'annee' => $annee]) }}"
-                       target="_blank" class="btn btn-info btn-sm ms-2">
+                    <a href="{{ route('dashboard.print', ['mois' => $mois, 'annee' => $annee]) }}" target="_blank"
+                        class="btn btn-info btn-sm ms-2">
                         <i class="bi bi-printer me-1"></i>&nbsp; Imprimer
                     </a>
                 </div>
@@ -56,8 +71,14 @@
         </div>
         <div class="col-md-3">
             <div class="stat-card" style="background: linear-gradient(135deg,#0d7a8a,#17a2b8)">
-                <div class="stat-label"><i class="bi bi-safe me-1"></i>Total Caisse</div>
+                <div class="stat-label"><i class="bi bi-safe me-1"></i>Total épargne (IMF)</div>
                 <div class="stat-value">{{ number_format($totalGlobal['caisse'], 0, ',', ' ') }}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg,#8b5a00,#d4a017)">
+                <div class="stat-label"><i class="bi bi-file-earmark-check me-1"></i>Total ODK</div>
+                <div class="stat-value">{{ number_format($totalGlobal['odk'], 0, ',', ' ') }}</div>
             </div>
         </div>
         <div class="col-md-3">
@@ -74,8 +95,14 @@
         </div>
         <div class="col-md-3">
             <div class="stat-card" style="background: linear-gradient(135deg,#7b2d00,#c0392b)">
-                <div class="stat-label"><i class="bi bi-arrow-left-right me-1"></i>Total Écarts Caisse</div>
+                <div class="stat-label"><i class="bi bi-arrow-left-right me-1"></i>Total Écarts IMF</div>
                 <div class="stat-value">{{ number_format($totalGlobal['ecart_caisse'], 0, ',', ' ') }}</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card" style="background: linear-gradient(135deg,#5a3a7a,#8b5bc2)">
+                <div class="stat-label"><i class="bi bi-arrow-left-right me-1"></i>Total Écarts ODK</div>
+                <div class="stat-value">{{ number_format($totalGlobal['ecart_odk'], 0, ',', ' ') }}</div>
             </div>
         </div>
     </div>
@@ -101,8 +128,10 @@
                             <th class="text-end">Montant Warehouse</th>
                             <th class="text-end">Montant Cahier</th>
                             <th class="text-end">Montant Caisse</th>
+                            <th class="text-end">Montant ODK</th>
                             <th class="text-end">Écart Cahier</th>
                             <th class="text-end">Écart Caisse</th>
+                            <th class="text-end">Écart ODK</th>
                             <th class="text-end">Rapports G50</th>
                             <th class="text-center" style="width:80px">Action</th>
                         </tr>
@@ -125,14 +154,24 @@
                                     @endif
                                     <td>{{ $province->nom }}</td>
                                     @if ($rapport)
-                                        <td class="text-end">{{ number_format($rapport->montant_warehouse, 0, ',', ' ') }}</td>
-                                        <td class="text-end">{{ number_format($rapport->montant_cahier, 0, ',', ' ') }}</td>
-                                        <td class="text-end">{{ number_format($rapport->montant_caisse ?? 0, 0, ',', ' ') }}</td>
+                                        <td class="text-end">{{ number_format($rapport->montant_warehouse, 0, ',', ' ') }}
+                                        </td>
+                                        <td class="text-end">{{ number_format($rapport->montant_cahier, 0, ',', ' ') }}
+                                        </td>
+                                        <td class="text-end">
+                                            {{ number_format($rapport->montant_caisse ?? 0, 0, ',', ' ') }}</td>
+                                        <td class="text-end">
+                                            {{ number_format($rapport->montant_odk ?? 0, 0, ',', ' ') }}</td>
                                         <td class="text-end {{ $rapport->ecart < 0 ? 'text-danger' : 'text-success' }}">
                                             {{ number_format($rapport->ecart, 0, ',', ' ') }}
                                         </td>
-                                        <td class="text-end {{ $rapport->ecart_caisse_warehouse < 0 ? 'text-danger' : 'text-success' }}">
+                                        <td
+                                            class="text-end {{ $rapport->ecart_caisse_warehouse < 0 ? 'text-danger' : 'text-success' }}">
                                             {{ number_format($rapport->ecart_caisse_warehouse, 0, ',', ' ') }}
+                                        </td>
+                                        <td
+                                            class="text-end {{ $rapport->ecart_odk_warehouse < 0 ? 'text-danger' : 'text-success' }}">
+                                            {{ number_format($rapport->ecart_odk_warehouse, 0, ',', ' ') }}
                                         </td>
                                         <td class="text-end">{{ $rapport->rapports_g50 }}</td>
                                         <td class="text-center">
@@ -142,7 +181,8 @@
                                             </a>
                                         </td>
                                     @else
-                                        <td class="text-muted text-center" colspan="6" style="font-size:.8rem">— aucun rapport —</td>
+                                        <td class="text-muted text-center" colspan="8" style="font-size:.8rem">— aucun
+                                            rapport —</td>
                                         <td class="text-center">
                                             <a href="{{ route('rapports.create') }}?province_id={{ $province->id }}&mois={{ $mois }}&annee={{ $annee }}"
                                                 class="btn btn-sm btn-outline-success btn-action" title="Saisir">
@@ -159,19 +199,32 @@
 
                             {{-- Ligne total région --}}
                             <tr class="table-total">
-                                <td class="text-center fw-bold" style="font-size:.8rem; letter-spacing:.04em; background:#8b8d8f5f;">
+                                <td class="text-center fw-bold"
+                                    style="font-size:.8rem; letter-spacing:.04em; background:#8b8d8f5f;">
                                     TOTAL {{ strtoupper($region->nom) }}
                                 </td>
-                                <td class="text-end fw-bold" style="background:#8b8d8f5f;">{{ number_format($region->totaux['warehouse'], 0, ',', ' ') }}</td>
-                                <td class="text-end fw-bold" style="background:#8b8d8f5f;">{{ number_format($region->totaux['cahier'], 0, ',', ' ') }}</td>
-                                <td class="text-end fw-bold" style="background:#8b8d8f5f;">{{ number_format($region->totaux['caisse'], 0, ',', ' ') }}</td>
-                                <td class="text-end fw-bold {{ $region->totaux['ecart'] < 0 ? 'text-danger' : 'text-success' }}" style="background:#8b8d8f5f;">
+                                <td class="text-end fw-bold" style="background:#8b8d8f5f;">
+                                    {{ number_format($region->totaux['warehouse'], 0, ',', ' ') }}</td>
+                                <td class="text-end fw-bold" style="background:#8b8d8f5f;">
+                                    {{ number_format($region->totaux['cahier'], 0, ',', ' ') }}</td>
+                                <td class="text-end fw-bold" style="background:#8b8d8f5f;">
+                                    {{ number_format($region->totaux['caisse'], 0, ',', ' ') }}</td>
+                                <td class="text-end fw-bold" style="background:#8b8d8f5f;">
+                                    {{ number_format($region->totaux['odk'] ?? 0, 0, ',', ' ') }}</td>
+                                <td class="text-end fw-bold {{ $region->totaux['ecart'] < 0 ? 'text-danger' : 'text-success' }}"
+                                    style="background:#8b8d8f5f;">
                                     {{ number_format($region->totaux['ecart'], 0, ',', ' ') }}
                                 </td>
-                                <td class="text-end fw-bold {{ $region->totaux['ecart_caisse'] < 0 ? 'text-danger' : 'text-success' }}" style="background:#8b8d8f5f;">
+                                <td class="text-end fw-bold {{ $region->totaux['ecart_caisse'] < 0 ? 'text-danger' : 'text-success' }}"
+                                    style="background:#8b8d8f5f;">
                                     {{ number_format($region->totaux['ecart_caisse'], 0, ',', ' ') }}
                                 </td>
-                                <td class="text-end fw-bold" style="background:#8b8d8f5f;">{{ $region->totaux['rapports'] }}</td>
+                                <td class="text-end fw-bold {{ $region->totaux['ecart_odk'] < 0 ? 'text-danger' : 'text-success' }}"
+                                    style="background:#8b8d8f5f;">
+                                    {{ number_format($region->totaux['ecart_odk'] ?? 0, 0, ',', ' ') }}
+                                </td>
+                                <td class="text-end fw-bold" style="background:#8b8d8f5f;">
+                                    {{ $region->totaux['rapports'] }}</td>
                                 <td style="background:#8b8d8f5f;"></td>
                             </tr>
                         @empty
@@ -191,8 +244,10 @@
                                 <td class="text-end">{{ number_format($totalGlobal['warehouse'], 0, ',', ' ') }}</td>
                                 <td class="text-end">{{ number_format($totalGlobal['cahier'], 0, ',', ' ') }}</td>
                                 <td class="text-end">{{ number_format($totalGlobal['caisse'], 0, ',', ' ') }}</td>
+                                <td class="text-end">{{ number_format($totalGlobal['odk'], 0, ',', ' ') }}</td>
                                 <td class="text-end">{{ number_format($totalGlobal['ecart'], 0, ',', ' ') }}</td>
                                 <td class="text-end">{{ number_format($totalGlobal['ecart_caisse'], 0, ',', ' ') }}</td>
+                                <td class="text-end">{{ number_format($totalGlobal['ecart_odk'], 0, ',', ' ') }}</td>
                                 <td class="text-end">{{ number_format($totalGlobal['rapports']) }}</td>
                                 <td></td>
                             </tr>

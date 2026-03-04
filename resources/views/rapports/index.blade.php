@@ -41,7 +41,7 @@
             {{ $annee }}</strong>
         <span class="text-muted ms-2">({{ $rapports->total() }} rapport(s))</span>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body p-2">
         <table class="table table-hover mb-0" style="font-size:.88rem">
             <thead>
                 <tr>
@@ -50,6 +50,7 @@
                     <th class="text-end">Warehouse</th>
                     <th class="text-end">Cahier</th>
                     <th class="text-end">Caisse</th>
+                    <th class="text-end">ODK</th>
                     <th class="text-end">Écart Cahier</th>
                     <th class="text-end">Écart Caisse</th>
                     <th class="text-end">G50</th>
@@ -64,6 +65,7 @@
                     <td class="text-end">{{ number_format($rapport->montant_warehouse, 0, ',', ' ') }}</td>
                     <td class="text-end">{{ number_format($rapport->montant_cahier, 0, ',', ' ') }}</td>
                     <td class="text-end">{{ number_format($rapport->montant_caisse, 0, ',', ' ') }}</td>
+                    <td class="text-end">{{ number_format($rapport->montant_odk, 0, ',', ' ') }}</td>
                     <td class="text-end {{ $rapport->ecart < 0 ? 'text-danger' : 'text-success' }}">
                         {{ number_format($rapport->ecart, 0, ',', ' ') }}
                     </td>
