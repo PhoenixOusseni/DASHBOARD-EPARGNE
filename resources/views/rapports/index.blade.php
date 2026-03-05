@@ -50,9 +50,8 @@
                     <th class="text-end">Warehouse</th>
                     <th class="text-end">Cahier</th>
                     <th class="text-end">Caisse</th>
-                    <th class="text-end">ODK</th>
                     <th class="text-end">Écart Cahier</th>
-                    <th class="text-end">Écart Caisse</th>
+                    <th class="text-end">Écart IMF</th>
                     <th class="text-end">G50</th>
                     <th class="text-end" style="width:100px">Actions</th>
                 </tr>
@@ -65,7 +64,6 @@
                     <td class="text-end">{{ number_format($rapport->montant_warehouse, 0, ',', ' ') }}</td>
                     <td class="text-end">{{ number_format($rapport->montant_cahier, 0, ',', ' ') }}</td>
                     <td class="text-end">{{ number_format($rapport->montant_caisse, 0, ',', ' ') }}</td>
-                    <td class="text-end">{{ number_format($rapport->montant_odk, 0, ',', ' ') }}</td>
                     <td class="text-end {{ $rapport->ecart < 0 ? 'text-danger' : 'text-success' }}">
                         {{ number_format($rapport->ecart, 0, ',', ' ') }}
                     </td>

@@ -25,13 +25,13 @@
     <div class="row g-3 mb-4">
         <div class="col-md-3">
             <div class="stat-card" style="background: linear-gradient(135deg,#1a2942,#2e4680)">
-                <div class="stat-label"><i class="bi bi-building me-1"></i>Montant épargne Warehouse</div>
+                <div class="stat-label"><i class="bi bi-building me-1"></i>Montant Warehouse</div>
                 <div class="stat-value">{{ number_format($totalGlobal['warehouse'], 0, ',', ' ') }}</div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="stat-card" style="background: linear-gradient(135deg,#0d6e4e,#198754)">
-                <div class="stat-label"><i class="bi bi-journal-text me-1"></i>Montant épargne Cahier</div>
+                <div class="stat-label"><i class="bi bi-journal-text me-1"></i>Montant Cahier</div>
                 <div class="stat-value">{{ number_format($totalGlobal['cahier'], 0, ',', ' ') }}</div>
             </div>
         </div>
@@ -42,26 +42,26 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="stat-card" style="background: linear-gradient(135deg,#8b5a00,#d4a017)">
-                <div class="stat-label"><i class="bi bi-file-earmark-check me-1"></i>Montant épargne ODK</div>
+            <div class="stat-card" style="background: linear-gradient(135deg,#8b5a00,#d4a500)">
+                <div class="stat-label"><i class="bi bi-box-seam me-1"></i>Montant ODK</div>
                 <div class="stat-value">{{ number_format($totalGlobal['odk'], 0, ',', ' ') }}</div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="stat-card" style="background: linear-gradient(135deg,#9c3e00,#dc6015)">
-                <div class="stat-label"><i class="bi bi-arrow-left-right me-1"></i>Total écart WH vs CAHIER</div>
+                <div class="stat-label"><i class="bi bi-arrow-left-right me-1"></i>Total écart CAHIER vs WH</div>
                 <div class="stat-value {{ $totalGlobal['ecart'] < 0 ? 'text-danger' : 'text-white' }}">{{ number_format($totalGlobal['ecart'], 0, ',', ' ') }}</div>
             </div>
         </div>
         <div class="col-md-3">
             <div class="stat-card" style="background: linear-gradient(135deg,#7b2d00,#c0392b)">
-                <div class="stat-label"><i class="bi bi-arrow-left-right me-1"></i>Total écart WH vs épargne</div>
+                <div class="stat-label"><i class="bi bi-arrow-left-right me-1"></i>Total écart compte épargne vs WH</div>
                 <div class="stat-value {{ $totalGlobal['ecart_caisse'] < 0 ? 'text-danger' : 'text-white' }}">{{ number_format($totalGlobal['ecart_caisse'], 0, ',', ' ') }}</div>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="stat-card" style="background: linear-gradient(135deg,#5a3a7a,#8b5bc2)">
-                <div class="stat-label"><i class="bi bi-arrow-left-right me-1"></i>Total écart WH vs ODK</div>
+            <div class="stat-card" style="background: linear-gradient(135deg,#5a3800,#a0631f)">
+                <div class="stat-label"><i class="bi bi-arrow-left-right me-1"></i>Total écart ODK vs WH</div>
                 <div class="stat-value {{ $totalGlobal['ecart_odk'] < 0 ? 'text-danger' : 'text-white' }}">{{ number_format($totalGlobal['ecart_odk'], 0, ',', ' ') }}</div>
             </div>
         </div>
@@ -122,7 +122,6 @@
                             <th class="text-end">Montant Warehouse</th>
                             <th class="text-end">Montant Cahier</th>
                             <th class="text-end">Montant Caisse</th>
-                            <th class="text-end">Montant ODK</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -132,11 +131,10 @@
                                 <td class="text-end">{{ number_format($province['warehouse'], 0, ',', ' ') }}</td>
                                 <td class="text-end">{{ number_format($province['cahier'], 0, ',', ' ') }}</td>
                                 <td class="text-end">{{ number_format($province['caisse'] ?? 0, 0, ',', ' ') }}</td>
-                                <td class="text-end">{{ number_format($province['odk'] ?? 0, 0, ',', ' ') }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center text-muted py-4">Aucune donnée disponible</td>
+                                <td colspan="4" class="text-center text-muted py-4">Aucune donnée disponible</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -211,13 +209,13 @@
                     {
                         label: 'ODK',
                         data: odkData,
-                        borderColor: '#8b5a00',
+                        borderColor: '#d4a500',
                         backgroundColor: 'rgba(139, 90, 0, 0.1)',
                         borderWidth: 3,
                         fill: true,
                         tension: 0.4,
                         pointRadius: 5,
-                        pointBackgroundColor: '#8b5a00',
+                        pointBackgroundColor: '#d4a500',
                         pointBorderColor: '#fff',
                         pointBorderWidth: 2
                     }

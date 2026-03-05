@@ -14,7 +14,6 @@ class RapportEpargne extends Model
         'montant_warehouse',
         'montant_cahier',
         'montant_caisse',
-        'montant_odk',
         'rapports_g50',
     ];
 
@@ -22,7 +21,6 @@ class RapportEpargne extends Model
         'montant_warehouse' => 'integer',
         'montant_cahier'    => 'integer',
         'montant_caisse'   => 'integer',
-        'montant_odk'      => 'integer',
         'rapports_g50'      => 'integer',
         'mois'              => 'integer',
         'annee'             => 'integer',
@@ -54,7 +52,8 @@ class RapportEpargne extends Model
      */
     public function getEcartOdkWarehouseAttribute(): int
     {
-        return ($this->montant_odk ?? 0) - $this->montant_warehouse;
+        // ODK est maintenant dans une table séparée MontantODK
+        return 0;
     }
 
     /**

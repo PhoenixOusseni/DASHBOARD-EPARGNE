@@ -112,7 +112,9 @@
     <a href="{{ route('rapports.index') }}" class="nav-link {{ request()->routeIs('rapports.*') && !request()->routeIs('rapports.create') ? 'active' : '' }}">
         <i class="bi bi-table"></i> Liste des rapports
     </a>
-
+    <a href="{{ route('montants-odk.index') }}" class="nav-link {{ request()->routeIs('montants-odk.*') ? 'active' : '' }}">
+        <i class="bi bi-table"></i> Montant ODK
+    </a>
     <div class="nav-section">Paramètres</div>
     <a href="{{ route('regions.index') }}" class="nav-link {{ request()->routeIs('regions.*') ? 'active' : '' }}">
         <i class="bi bi-map"></i> Régions

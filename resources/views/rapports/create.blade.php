@@ -101,19 +101,6 @@
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label class="small fw-semibold">Montant sur ODK (FCFA) <span
-                                        class="text-danger">*</span></label>
-                                <input type="number" name="montant_odk" min="0"
-                                    class="form-control @error('montant_odk') is-invalid @enderror"
-                                    value="{{ old('montant_odk', 0) }}">
-                                @error('montant_odk')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row g-3 mb-3">
-                            <div class="col-md-12">
                                 <label class="small fw-semibold">Rapports G50 Épargnes Arrivés <span
                                         class="text-danger">*</span></label>
                                 <input type="number" name="rapports_g50" min="0"
@@ -128,20 +115,15 @@
                         <hr class="my-4">
 
                         <div class="row g-3 mb-3">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label class="small fw-semibold text-muted">Écart (Cahier – Warehouse)</label>
                                 <input type="text" class="form-control bg-light text-muted" id="ecart_cahier_warehouse"
                                     readonly placeholder="Cahier – Warehouse">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label class="small fw-semibold text-muted">Écart (Caisse – Warehouse)</label>
                                 <input type="text" class="form-control bg-light text-muted" id="ecart_caisse_warehouse"
                                     readonly placeholder="Caisse – Warehouse">
-                            </div>
-                            <div class="col-md-4">
-                                <label class="small fw-semibold text-muted">Écart (ODK – Warehouse)</label>
-                                <input type="text" class="form-control bg-light text-muted" id="ecart_odk_warehouse"
-                                    readonly placeholder="ODK – Warehouse">
                             </div>
                         </div>
 
@@ -165,7 +147,6 @@
         const odk = document.querySelector('[name="montant_odk"]');
         const ecartCahierWarehouse = document.getElementById('ecart_cahier_warehouse');
         const ecartCaisseWarehouse = document.getElementById('ecart_caisse_warehouse');
-        const ecartOdkWarehouse = document.getElementById('ecart_odk_warehouse');
 
         function updateEcart() {
             const diffCahierWarehouse = (parseInt(cahier.value) || 0) - (parseInt(warehouse.value) || 0);
@@ -175,10 +156,6 @@
             const diffCaisseWarehouse = (parseInt(caisse.value) || 0) - (parseInt(warehouse.value) || 0);
             ecartCaisseWarehouse.value = diffCaisseWarehouse.toLocaleString('fr-FR');
             ecartCaisseWarehouse.style.color = diffCaisseWarehouse < 0 ? '#dc3545' : '#198754';
-
-            const diffOdkWarehouse = (parseInt(odk.value) || 0) - (parseInt(warehouse.value) || 0);
-            ecartOdkWarehouse.value = diffOdkWarehouse.toLocaleString('fr-FR');
-            ecartOdkWarehouse.style.color = diffOdkWarehouse < 0 ? '#dc3545' : '#198754';
         }
 
         warehouse.addEventListener('input', updateEcart);

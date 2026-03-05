@@ -52,7 +52,6 @@ class RapportEpargneController extends Controller
             'montant_warehouse' => 'required|integer|min:0',
             'montant_cahier' => 'required|integer|min:0',
             'montant_caisse' => 'required|integer|min:0',
-            'montant_odk' => 'required|integer|min:0',
             'rapports_g50' => 'required|integer|min:0',
         ]);
 
@@ -88,7 +87,6 @@ class RapportEpargneController extends Controller
             'montant_warehouse' => 'required|integer|min:0',
             'montant_cahier' => 'required|integer|min:0',
             'montant_caisse' => 'required|integer|min:0',
-            'montant_odk' => 'required|integer|min:0',
             'rapports_g50' => 'required|integer|min:0',
         ]);
 

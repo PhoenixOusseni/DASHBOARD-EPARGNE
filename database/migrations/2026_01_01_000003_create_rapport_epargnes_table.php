@@ -16,7 +16,6 @@ return new class extends Migration
             $table->bigInteger('montant_warehouse')->default(0);
             $table->bigInteger('montant_cahier')->default(0);
             $table->bigInteger('montant_caisse')->default(0);
-            $table->bigInteger('montant_odk')->default(0);
             $table->integer('rapports_g50')->default(0);
             $table->timestamps();
 

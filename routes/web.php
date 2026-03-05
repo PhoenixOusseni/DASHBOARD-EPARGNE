@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RapportEpargneController;
+use App\Http\Controllers\MontantODKController;
 use App\Http\Controllers\DashboardGlobalController;
 
 
@@ -24,3 +25,7 @@ Route::resource('provinces', ProvinceController::class)->except(['show']);
 
 // Rapports d'épargnes
 Route::resource('rapports', RapportEpargneController::class)->except(['show']);
+
+// Montants ODK
+Route::resource('montants-odk', MontantODKController::class)->except(['show']);
+

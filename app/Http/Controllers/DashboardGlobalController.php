@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RapportEpargne;
+use App\Models\MontantODK;
 use Illuminate\Http\Request;
 
 class DashboardGlobalController extends Controller
@@ -27,11 +28,14 @@ class DashboardGlobalController extends Controller
             $totalGlobal['warehouse']    += $rapport->montant_warehouse;
             $totalGlobal['cahier']       += $rapport->montant_cahier;
             $totalGlobal['caisse']       += $rapport->montant_caisse ?? 0;
-            $totalGlobal['odk']          += $rapport->montant_odk ?? 0;
             $totalGlobal['ecart']        += $rapport->ecart;
             $totalGlobal['ecart_caisse'] += $rapport->ecart_caisse_warehouse;
-            $totalGlobal['ecart_odk']    += $rapport->ecart_odk_warehouse;
         }
+
+        // Récupérer et sommer tous les montants ODK
+        $totalODK = MontantODK::sum('montant_odk');
+        $totalGlobal['odk'] = $totalODK;
+        $totalGlobal['ecart_odk'] = $totalODK - $totalGlobal['warehouse'];
 
         // Récupérer les données par province pour les graphiques
         $donneesParProvince = RapportEpargne::with('province')
@@ -43,18 +47,24 @@ class DashboardGlobalController extends Controller
                     'warehouse' => $rapportsProvince->sum('montant_warehouse'),
                     'cahier' => $rapportsProvince->sum('montant_cahier'),
                     'caisse' => $rapportsProvince->sum('montant_caisse'),
-                    'odk' => $rapportsProvince->sum('montant_odk'),
                 ];
             })
             ->sortBy('province')
             ->values();
 
         // Récupérer les données par mois pour graphique de tendance
-        $donneesParMois = RapportEpargne::selectRaw('mois, annee, SUM(montant_warehouse) as total_warehouse, SUM(montant_cahier) as total_cahier, SUM(montant_caisse) as total_caisse, SUM(montant_odk) as total_odk')
+        $rupportsParMois = RapportEpargne::selectRaw('mois, annee, SUM(montant_warehouse) as total_warehouse, SUM(montant_cahier) as total_cahier, SUM(montant_caisse) as total_caisse')
             ->groupBy('mois', 'annee')
             ->orderBy('annee')
             ->orderBy('mois')
             ->get();
+
+        // Enrichir avec les données ODK par mois/année
+        $donneesParMois = $rupportsParMois->map(function ($item) {
+            $odk = MontantODK::where('mois', $item->mois)->where('annee', $item->annee)->first();
+            $item->total_odk = $odk ? $odk->montant_odk : 0;
+            return $item;
+        });
 
         return view('dashboard.dashboard_global', compact('totalGlobal', 'donneesParProvince', 'donneesParMois'));
     }
