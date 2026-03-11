@@ -66,16 +66,18 @@ class MontantODKController extends Controller
             ->with('success', 'Montant ODK enregistré avec succès.');
     }
 
-    public function edit(MontantODK $montantOdk)
+    public function edit(String $id)
     {
+        $montantOdk = MontantODK::findOrFail($id);
         $annees = range(now()->year - 3, now()->year + 1);
         $moisListe = $this->moisListe;
 
         return view('montant_odk.edit', compact('montantOdk', 'annees', 'moisListe'));
     }
 
-    public function update(Request $request, MontantODK $montantOdk)
+    public function update(Request $request, String $id)
     {
+        $montantOdk = MontantODK::findOrFail($id);
         $data = $request->validate([
             'montant_odk' => 'required|integer|min:0',
         ]);
@@ -87,8 +89,9 @@ class MontantODKController extends Controller
             ->with('success', 'Montant ODK mis à jour avec succès.');
     }
 
-    public function destroy(MontantODK $montantOdk)
+    public function destroy(String $id)
     {
+        $montantOdk = MontantODK::findOrFail($id);
         $mois = $montantOdk->mois;
         $annee = $montantOdk->annee;
         $montantOdk->delete();

@@ -61,7 +61,7 @@
         </div>
         <div class="col-md-3">
             <div class="stat-card" style="background: linear-gradient(135deg,#5a3800,#a0631f)">
-                <div class="stat-label"><i class="bi bi-arrow-left-right me-1"></i>Total écart ODK vs WH</div>
+                <div class="stat-label"><i class="bi bi-arrow-left-right me-1"></i>Total écart cahier vs ODK</div>
                 <div class="stat-value {{ $totalGlobal['ecart_odk'] < 0 ? 'text-danger' : 'text-white' }}">{{ number_format($totalGlobal['ecart_odk'], 0, ',', ' ') }}</div>
             </div>
         </div>
@@ -147,6 +147,7 @@
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <script>
         // Préparer les données pour l'évolution mensuelle
         const donneesParMois = @json($donneesParMois);
@@ -159,6 +160,16 @@
         const cahierData = donneesParMois.map(d => d.total_cahier || 0);
         const caisseData = donneesParMois.map(d => d.total_caisse || 0);
         const odkData = donneesParMois.map(d => d.total_odk || 0);
+
+        // Calcul des pourcentages d'évolution par série
+        function calcPct(data, idx) {
+            if (idx === 0) return null;
+            const prev = data[idx - 1];
+            const curr = data[idx];
+            if (prev === 0 && curr === 0) return null;
+            if (prev === 0) return null;
+            return ((curr - prev) / prev * 100).toFixed(1);
+        }
 
         // Graphique évolution des montants
         const ctxMontants = document.getElementById('chartMontants').getContext('2d');
@@ -229,6 +240,24 @@
                     intersect: false
                 },
                 plugins: {
+                    datalabels: {
+                        display: function(context) {
+                            return context.dataIndex > 0;
+                        },
+                        formatter: function(value, context) {
+                            const pct = calcPct(context.dataset.data, context.dataIndex);
+                            if (pct === null) return '';
+                            return (parseFloat(pct) >= 0 ? '+' : '') + pct + '%';
+                        },
+                        color: function(context) {
+                            const pct = calcPct(context.dataset.data, context.dataIndex);
+                            return pct !== null && parseFloat(pct) >= 0 ? '#198754' : '#c0392b';
+                        },
+                        font: { size: 10, weight: 'bold' },
+                        anchor: 'end',
+                        align: 'top',
+                        offset: 2
+                    },
                     legend: {
                         display: true,
                         position: 'top',
@@ -245,7 +274,18 @@
                         bodyFont: { size: 12 },
                         callbacks: {
                             label: function(context) {
-                                return context.dataset.label + ': ' + new Intl.NumberFormat('fr-FR').format(context.raw);
+                                const idx = context.dataIndex;
+                                const current = context.raw;
+                                const previous = idx > 0 ? context.dataset.data[idx - 1] : null;
+                                let line = context.dataset.label + ': ' + new Intl.NumberFormat('fr-FR').format(current);
+                                if (previous !== null && previous !== 0) {
+                                    const pct = ((current - previous) / previous * 100).toFixed(1);
+                                    const arrow = pct >= 0 ? '▲' : '▼';
+                                    line += '  ' + arrow + ' ' + (pct >= 0 ? '+' : '') + pct + '%';
+                                } else if (previous === 0 && current > 0) {
+                                    line += '  ▲ nouveau';
+                                }
+                                return line;
                             }
                         }
                     }
@@ -309,6 +349,7 @@
                 responsive: true,
                 maintainAspectRatio: true,
                 plugins: {
+                    datalabels: { display: false },
                     legend: {
                         display: true,
                         position: 'bottom'
@@ -346,6 +387,7 @@
                 maintainAspectRatio: true,
                 indexAxis: 'y',
                 plugins: {
+                    datalabels: { display: false },
                     legend: {
                         display: true,
                         position: 'top'

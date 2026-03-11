@@ -35,7 +35,7 @@ class DashboardGlobalController extends Controller
         // Récupérer et sommer tous les montants ODK
         $totalODK = MontantODK::sum('montant_odk');
         $totalGlobal['odk'] = $totalODK;
-        $totalGlobal['ecart_odk'] = $totalODK - $totalGlobal['warehouse'];
+        $totalGlobal['ecart_odk'] = $totalGlobal['cahier'] - $totalODK;
 
         // Récupérer les données par province pour les graphiques
         $donneesParProvince = RapportEpargne::with('province')
